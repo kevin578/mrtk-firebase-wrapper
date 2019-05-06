@@ -1,17 +1,23 @@
-const firebase = require("firebase");
+const firebase = require("firebase/app");
+const mobx = require('mobx');
+require('firebase/auth');
 
 var provider = new firebase.auth.GoogleAuthProvider();
 
-let user = {
+let user = mobx.observable({
   name: "",
   email: "",
   photoURL: "",
   isLoggedIn: false,
 
   loginWithGoogle() {
+    
     firebase
       .auth()
       .signInWithPopup(provider)
+      .then(function(resp) {
+        user.setData(resp.displayName, resp.email, resp.photoURL)
+      })
       .catch(function(error) {
         console.log("error:", error);
       });
@@ -21,9 +27,18 @@ let user = {
     firebase
       .auth()
       .signOut()
+      .then(function() {
+        user.setData("","","")
+      })
       .catch(function(error) {
         console.log(error);
       });
+  },
+
+  setData(name, email, url) {
+    this.name = name;
+    this.email = email;
+    this.photoURL = url;
   },
 
   getUserInfo: function() {
@@ -44,7 +59,7 @@ let user = {
 
 
   }
-};
+});
 
 module.exports = {
   user

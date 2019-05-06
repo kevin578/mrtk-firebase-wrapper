@@ -6,7 +6,8 @@
   "main": "index.js",
   "dependencies": {
     "firebase": "^5.11.1",
-    "live-server": "^1.2.1"
+    "live-server": "^1.2.1",
+    "mobx": "^5.9.4"
   },
   "devDependencies": {
     "webpack": "^4.30.0",
