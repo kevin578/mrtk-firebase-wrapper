@@ -1,6 +1,4 @@
-const firebase = require("firebase/app");
 const mobx = require('mobx');
-require('firebase/auth');
 
 var provider = new firebase.auth.GoogleAuthProvider();
 
@@ -16,7 +14,8 @@ let user = mobx.observable({
       .auth()
       .signInWithPopup(provider)
       .then(function(resp) {
-        user.setData(resp.displayName, resp.email, resp.photoURL)
+        const {displayName, email, photoURL} = resp.user;
+        user.setData(displayName, email, photoURL)
       })
       .catch(function(error) {
         console.log("error:", error);

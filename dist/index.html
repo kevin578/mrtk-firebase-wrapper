@@ -1,0 +1,31 @@
+<head>
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/5.11.1/firebase-app.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#config-web-app -->
+
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyBiRhvS8LX2HHhglveeWIiBmq9tOyEw1kA",
+      authDomain: "petition-239619.firebaseapp.com",
+      databaseURL: "https://petition-239619.firebaseio.com",
+      projectId: "petition-239619",
+      storageBucket: "petition-239619.appspot.com",
+      messagingSenderId: "900671653422",
+      appId: "1:900671653422:web:24906dbe9c9d627a"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+  </script>
+  <script src="https://www.gstatic.com/firebasejs/5.11.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.11.1/firebase-firestore.js"></script>
+  <script src="./main.js"></script>
+</head>
+
+<body>
+  <button id="loginWithGoogle">Login</button>
+  <button id="logoutWithGoogle">Log Out</button>
+  <p id="welcomeMessage"></p>
+</body>
