@@ -40,7 +40,7 @@ let user = mobx.observable({
     this.photoURL = url;
   },
 
-  getUserInfo: function() {
+  getInfo: function() {
     let name, email, photoURL, isLoggedIn;
 
     return new Promise((resolve, reject)=> {

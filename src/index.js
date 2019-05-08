@@ -4,7 +4,7 @@ const mobx = require('mobx')
   let database = require('./database').database;
 
   async function setUserInfo() {
-    const userInfo = await user.getUserInfo();
+    const userInfo = await user.getInfo();
     const {displayName, email, photoURL} = userInfo;
     if (displayName) {
       user.setData(displayName, email, photoURL);
@@ -13,17 +13,17 @@ const mobx = require('mobx')
 
   setUserInfo();
 
-  const withState = mobx.autorun;
+  const watchForState = mobx.autorun;
+  const stateObject = mobx.observable
 
-  withState(async function() {
+  watchForState(function() {
     if (user.name) {
       document.getElementById("loginWithGoogle").style.visibility = "hidden";
-      document.getElementById("logoutWithGoogle").style.visibility = "visible";
+      document.getElementById("logout").style.visibility = "visible";
       document.getElementById("welcomeMessage").innerHTML = `Hello ${user.name}`
-
     }
     else {
-      document.getElementById("logoutWithGoogle").style.visibility = "hidden";
+      document.getElementById("logout").style.visibility = "hidden";
       document.getElementById("loginWithGoogle").style.visibility = "visible";
       document.getElementById("welcomeMessage").innerHTML = `Please Login`
     }
@@ -33,11 +33,11 @@ const mobx = require('mobx')
 
   window.onload = function() {
     document.getElementById("loginWithGoogle").addEventListener ("click",   user.loginWithGoogle, false);
-    document.getElementById("logoutWithGoogle").addEventListener ("click",   user.logout, false);
+    document.getElementById("logout").addEventListener ("click",   user.logout, false);
   }
 
 window.mrtk = {
-  withState, user, database
+  watchForState, stateObject, user, database
 }
 
   

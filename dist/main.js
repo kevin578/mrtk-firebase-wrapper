@@ -95,7 +95,7 @@ const mobx = __webpack_require__(134)
   let database = __webpack_require__(142).database;
 
   async function setUserInfo() {
-    const userInfo = await user.getUserInfo();
+    const userInfo = await user.getInfo();
     const {displayName, email, photoURL} = userInfo;
     if (displayName) {
       user.setData(displayName, email, photoURL);
@@ -104,17 +104,17 @@ const mobx = __webpack_require__(134)
 
   setUserInfo();
 
-  const withState = mobx.autorun;
+  const watchForState = mobx.autorun;
+  const stateObject = mobx.observable
 
-  withState(async function() {
+  watchForState(function() {
     if (user.name) {
       document.getElementById("loginWithGoogle").style.visibility = "hidden";
-      document.getElementById("logoutWithGoogle").style.visibility = "visible";
+      document.getElementById("logout").style.visibility = "visible";
       document.getElementById("welcomeMessage").innerHTML = `Hello ${user.name}`
-
     }
     else {
-      document.getElementById("logoutWithGoogle").style.visibility = "hidden";
+      document.getElementById("logout").style.visibility = "hidden";
       document.getElementById("loginWithGoogle").style.visibility = "visible";
       document.getElementById("welcomeMessage").innerHTML = `Please Login`
     }
@@ -124,11 +124,11 @@ const mobx = __webpack_require__(134)
 
   window.onload = function() {
     document.getElementById("loginWithGoogle").addEventListener ("click",   user.loginWithGoogle, false);
-    document.getElementById("logoutWithGoogle").addEventListener ("click",   user.logout, false);
+    document.getElementById("logout").addEventListener ("click",   user.logout, false);
   }
 
 window.mrtk = {
-  withState, user, database
+  watchForState, stateObject, user, database
 }
 
   
@@ -4635,7 +4635,7 @@ let user = mobx.observable({
     this.photoURL = url;
   },
 
-  getUserInfo: function() {
+  getInfo: function() {
     let name, email, photoURL, isLoggedIn;
 
     return new Promise((resolve, reject)=> {
