@@ -84,60 +84,46 @@
 /******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
-/******/ ({
-
-/***/ 0:
+/******/ ([
+/* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const mobx = __webpack_require__(134)
+const mobx = __webpack_require__(1);
+const watchForState = mobx.autorun;
+const stateObject = mobx.observable;
 
-  let user = __webpack_require__(135).user;
-  let database = __webpack_require__(142).database;
+let user = __webpack_require__(4).user;
+let database = __webpack_require__(5).database;
 
-  async function setUserInfo() {
-    const userInfo = await user.getInfo();
-    const {displayName, email, photoURL} = userInfo;
-    if (displayName) {
-      user.setData(displayName, email, photoURL);
-    }
+window.onload = function() {
+  document
+    .getElementById("loginWithGoogle")
+    .addEventListener("click", user.loginWithGoogle, false);
+  document
+    .getElementById("logout")
+    .addEventListener("click", user.logout, false);
+};
+
+async function setUserInfo() {
+  const userInfo = await user.getInfo();
+  const { displayName, email, photoURL } = userInfo;
+  if (displayName) {
+    user.setData(displayName, email, photoURL);
   }
-
-  setUserInfo();
-
-  const watchForState = mobx.autorun;
-  const stateObject = mobx.observable
-
-  watchForState(function() {
-    if (user.name) {
-      document.getElementById("loginWithGoogle").style.visibility = "hidden";
-      document.getElementById("logout").style.visibility = "visible";
-      document.getElementById("welcomeMessage").innerHTML = `Hello ${user.name}`
-    }
-    else {
-      document.getElementById("logout").style.visibility = "hidden";
-      document.getElementById("loginWithGoogle").style.visibility = "visible";
-      document.getElementById("welcomeMessage").innerHTML = `Please Login`
-    }
-  }) 
-
-
-
-  window.onload = function() {
-    document.getElementById("loginWithGoogle").addEventListener ("click",   user.loginWithGoogle, false);
-    document.getElementById("logout").addEventListener ("click",   user.logout, false);
-  }
-
-window.mrtk = {
-  watchForState, stateObject, user, database
 }
 
-  
+setUserInfo();
 
-  
+window.mrtk = {
+  watchForState,
+  stateObject,
+  user,
+  database
+};
+
 
 /***/ }),
-
-/***/ 134:
+/* 1 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4586,152 +4572,10 @@ if (typeof __MOBX_DEVTOOLS_GLOBAL_HOOK__ === "object") {
 
 
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(8), __webpack_require__(6)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(2), __webpack_require__(3)))
 
 /***/ }),
-
-/***/ 135:
-/***/ (function(module, exports, __webpack_require__) {
-
-const mobx = __webpack_require__(134);
-
-var provider = new firebase.auth.GoogleAuthProvider();
-
-let user = mobx.observable({
-  name: "",
-  email: "",
-  photoURL: "",
-  isLoggedIn: false,
-
-  loginWithGoogle() {
-    
-    firebase
-      .auth()
-      .signInWithPopup(provider)
-      .then(function(resp) {
-        const {displayName, email, photoURL} = resp.user;
-        user.setData(displayName, email, photoURL)
-      })
-      .catch(function(error) {
-        console.log("error:", error);
-      });
-  },
-
-  logout() {
-    firebase
-      .auth()
-      .signOut()
-      .then(function() {
-        user.setData("","","")
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
-  },
-
-  setData(name, email, url) {
-    this.name = name;
-    this.email = email;
-    this.photoURL = url;
-  },
-
-  getInfo: function() {
-    let name, email, photoURL, isLoggedIn;
-
-    return new Promise((resolve, reject)=> {
-      firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {
-          const { displayName, email, photoURL } = user;
-          resolve({
-            displayName, email, photoURL
-          })
-        } else {
-          resolve('Not logged in')
-        }
-      });
-    })
-
-
-  }
-});
-
-module.exports = {
-  user
-};
-
-
-/***/ }),
-
-/***/ 142:
-/***/ (function(module, exports) {
-
-var db = firebase.firestore();
-
-const database = function(collection) {
-    function add(data) {
-        return new Promise((resolve, reject)=> {
-            db.collection(collection).add(data)
-            .then(function(docRef) {
-                resolve(docRef)
-            })
-            .catch(function(error) {
-                reject(error)
-            });
-        })
-    }
-    function getAll() {
-        return new Promise((resolve, reject)=> {
-            db.collection(collection).get()
-            .then((querySnapshot) => {
-                resolve(querySnapshot.docs);
-            })
-            .catch((err)=> {
-                reject(err);
-            })
-
-        })
- 
-    }
-
-    return {add, getAll}
-
-
-}
-
-module.exports = {
-    database
-}
-
-/***/ }),
-
-/***/ 6:
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || new Function("return this")();
-} catch (e) {
-	// This works if the window reference is available
-	if (typeof window === "object") g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-
-/***/ 8:
+/* 2 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -4920,6 +4764,143 @@ process.chdir = function (dir) {
 process.umask = function() { return 0; };
 
 
-/***/ })
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
 
-/******/ });
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || new Function("return this")();
+} catch (e) {
+	// This works if the window reference is available
+	if (typeof window === "object") g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const mobx = __webpack_require__(1);
+
+var provider = new firebase.auth.GoogleAuthProvider();
+
+let user = mobx.observable({
+  name: "",
+  email: "",
+  photoURL: "",
+  isLoggedIn: false,
+
+  loginWithGoogle() {
+    
+    firebase
+      .auth()
+      .signInWithPopup(provider)
+      .then(function(resp) {
+        const {displayName, email, photoURL} = resp.user;
+        user.setData(displayName, email, photoURL)
+      })
+      .catch(function(error) {
+        console.log("error:", error);
+      });
+  },
+
+  logout() {
+    firebase
+      .auth()
+      .signOut()
+      .then(function() {
+        user.setData("","","")
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  },
+
+  setData(name, email, url) {
+    this.name = name;
+    this.email = email;
+    this.photoURL = url;
+  },
+
+  getInfo: function() {
+    let name, email, photoURL, isLoggedIn;
+
+    return new Promise((resolve, reject)=> {
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+          const { displayName, email, photoURL } = user;
+          resolve({
+            displayName, email, photoURL
+          })
+        } else {
+          resolve('Not logged in')
+        }
+      });
+    })
+
+
+  }
+});
+
+module.exports = {
+  user
+};
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
+var db = firebase.firestore();
+
+const database = function(collection) {
+    function add(data) {
+        return new Promise((resolve, reject)=> {
+            db.collection(collection).add(data)
+            .then(function(docRef) {
+                resolve(docRef)
+            })
+            .catch(function(error) {
+                reject(error)
+            });
+        })
+    }
+    function getAll() {
+        return new Promise((resolve, reject)=> {
+            db.collection(collection).get()
+            .then((querySnapshot) => {
+                resolve(querySnapshot.docs);
+            })
+            .catch((err)=> {
+                reject(err);
+            })
+
+        })
+ 
+    }
+
+    return {add, getAll}
+
+
+}
+
+module.exports = {
+    database
+}
+
+/***/ })
+/******/ ]);
