@@ -95,6 +95,8 @@ const stateObject = mobx.observable;
 let user = __webpack_require__(4).user;
 let database = __webpack_require__(5).database;
 
+
+//set up event listeners for auth
 window.onload = function() {
   document
     .getElementById("loginWithGoogle")
@@ -104,6 +106,8 @@ window.onload = function() {
     .addEventListener("click", user.logout, false);
 };
 
+
+//set userInfo once the page loads
 async function setUserInfo() {
   const userInfo = await user.getInfo();
   const { displayName, email, photoURL } = userInfo;
@@ -111,8 +115,10 @@ async function setUserInfo() {
     user.setData(displayName, email, photoURL);
   }
 }
-
 setUserInfo();
+
+//export library to the window object.
+
 
 window.mrtk = {
   watchForState,
@@ -4865,42 +4871,58 @@ module.exports = {
 /* 5 */
 /***/ (function(module, exports) {
 
-var db = firebase.firestore();
 
-const database = function(collection) {
-    function add(data) {
-        return new Promise((resolve, reject)=> {
-            db.collection(collection).add(data)
-            .then(function(docRef) {
-                resolve(docRef)
-            })
-            .catch(function(error) {
-                reject(error)
-            });
+
+const database = {
+    
+  add(collection, data) {
+    var db = firebase.firestore();
+    return new Promise((resolve, reject) => {
+      db.collection(collection)
+        .add(data)
+        .then(function(docRef) {
+          resolve(docRef);
         })
-    }
-    function getAll() {
-        return new Promise((resolve, reject)=> {
-            db.collection(collection).get()
-            .then((querySnapshot) => {
-                resolve(querySnapshot.docs);
-            })
-            .catch((err)=> {
-                reject(err);
-            })
+        .catch(function(error) {
+          reject(error);
+        });
+    });
+  },
 
+  getAll(collection) {
+    var db = firebase.firestore();
+    return new Promise((resolve, reject) => {
+      db.collection(collection)
+        .get()
+        .then(querySnapshot => {
+          resolve(querySnapshot.docs.map((item)=> item.data()));
         })
- 
-    }
+        .catch(err => {
+          reject(err);
+        });
+    });
+  },
 
-    return {add, getAll}
-
-
-}
+  query(collection, [arg1, arg2, arg3]) {
+    var db = firebase.firestore();
+    return new Promise((resolve, reject) => {
+      db.collection(collection)
+        .where(arg1, arg2, arg3)
+        .get()
+        .then(querySnapshot => {
+          resolve(querySnapshot.docs.map((item)=> item.data()));
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+};
 
 module.exports = {
-    database
-}
+  database
+};
+
 
 /***/ })
 /******/ ]);

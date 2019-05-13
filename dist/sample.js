@@ -1,5 +1,3 @@
-
-
 $(document).ready(function(){
 
     mrtk.watchForState(function() {
@@ -16,5 +14,18 @@ $(document).ready(function(){
           document.getElementById("welcomeMessage").innerHTML = `Please Login`;
         }
       });
+
+
+      // mrtk.database.add("user", {
+      //   name: "Jimmy",
+      //   job: "Astronaut"
+      // }).then((res)=> console.log(res)) 
+
+      
+
+      mrtk.database.query("user", ["name", "==", "Tammy"]).then(function(res) {
+        console.log(res);
+      })
+
 })
 
