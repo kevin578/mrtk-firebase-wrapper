@@ -5,6 +5,7 @@
   "private": true,
   "main": "index.js",
   "dependencies": {
+    "concurrently": "^4.1.0",
     "firebase": "^5.11.1",
     "live-server": "^1.2.1",
     "mobx": "^5.9.4"
@@ -15,7 +16,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --watch"
+    "build": "webpack --watch",
+    "start": "concurrently \"webpack --watch\" \"live-server dist/\""
   },
   "author": "",
   "license": "ISC"

@@ -1,5 +1,3 @@
-
-
 const database = {
     
   add(collection, data) {
@@ -22,7 +20,14 @@ const database = {
       db.collection(collection)
         .get()
         .then(querySnapshot => {
-          resolve(querySnapshot.docs.map((item)=> item.data()));
+          //in addition to regular items in the object, this also adds the id
+          resolve(querySnapshot.docs.map((item)=> {
+            return {
+              id: item.id,
+              ...item.data()
+            }
+          
+          }));
         })
         .catch(err => {
           reject(err);

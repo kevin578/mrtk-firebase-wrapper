@@ -1,7 +1,7 @@
 <head>
   <!-- The core Firebase JS SDK is always required and must be listed first -->
   <script src="https://www.gstatic.com/firebasejs/5.11.1/firebase-app.js"></script>
-
+  <link rel = "stylesheet" href = "style.css" />
   <!-- TODO: Add SDKs for Firebase products that you want to use
      https://firebase.google.com/docs/web/setup#config-web-app -->
 
@@ -35,5 +35,15 @@
   <!-- triggers a login -->
   <button id="logout">Log Out</button>
   <!-- triggers a logout -->
+
   <p id="welcomeMessage"></p>
+
+  <p>Petition Name</p>
+  <input type = "text" class = "textField" id = "petitionTitle"></input>
+  <p>Petition description</p>
+  <input type = "text" class = "textField" id = "petitionDescription"></input>
+  <button id = "submitButton" class = "button">Submit</button>
+
+  <div id = "petitionContainer"></div>
+
 </body>
